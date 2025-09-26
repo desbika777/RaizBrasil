@@ -16,6 +16,17 @@ body {
     overflow-x: hidden;
 }
 
+/* Tipografia fluida base */
+html { font-size: 100%; }
+:root {
+    --fluid-step: clamp(0.875rem, 0.75rem + 0.6vw, 1rem); /* base escalável */
+    --fluid-h1: clamp(2.2rem, 1.6rem + 3vw, 3.5rem);
+    --fluid-h2: clamp(1.9rem, 1.4rem + 2vw, 2.9rem);
+    --fluid-h3: clamp(1.3rem, 1.1rem + 1vw, 1.8rem);
+    --fluid-lead: clamp(1rem, 0.9rem + 0.6vw, 1.25rem);
+    --fluid-text: clamp(0.95rem, 0.9rem + 0.4vw, 1.05rem);
+}
+
 .container {
     max-width: 1200px;
     margin: 0 auto;
@@ -226,7 +237,7 @@ body {
 
 .hero-title {
     font-family: 'Oswald', sans-serif;
-    font-size: 3.5rem;
+    font-size: var(--fluid-h1);
     font-weight: 900;
     margin-bottom: 1rem;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
@@ -241,14 +252,14 @@ body {
 }
 
 .hero-subtitle {
-    font-size: 1.5rem;
+    font-size: var(--fluid-h3);
     margin-bottom: 1rem;
     color: var(--primary-yellow);
     font-weight: 300;
 }
 
 .hero-description {
-    font-size: 1.2rem;
+    font-size: var(--fluid-text);
     margin-bottom: 2rem;
     opacity: 0.9;
 }
@@ -308,8 +319,10 @@ body {
 .hero-carousel-container {
     position: relative;
     width: 100%;
-    max-width: 500px;
-    height: 400px;
+    max-width: 520px;
+    aspect-ratio: 5/4; /* torna proporcional */
+    height: auto;
+    min-height: 320px;
     perspective: 1000px;
 }
 
@@ -396,7 +409,7 @@ body {
 }
 
 .product-card img {
-    width: 280px;
+    width: clamp(190px, 55%, 280px);
     height: auto;
     border-radius: 15px;
     transition: all 0.4s ease;
@@ -765,7 +778,7 @@ body {
 
 /* Products Section */
 .products {
-    padding: 5rem 0;
+    padding: clamp(3.5rem, 3rem + 2vw, 5rem) 0;
     background: var(--bg-light);
     position: relative;
     overflow: hidden;
@@ -833,10 +846,13 @@ body {
 /* Product Carousel */
 .product-carousel {
     position: relative;
-    height: 350px;
+    height: clamp(240px, 55vw, 350px);
     overflow: hidden;
     border-radius: var(--border-radius);
     background: #f8f9fa;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .carousel-container {
@@ -868,8 +884,9 @@ body {
 .carousel-slide img {
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    object-fit: contain;
     transition: var(--transition);
+    padding: 0.5rem;
 }
 
 .slide-label {
@@ -1031,7 +1048,7 @@ body {
 
 /* Contact Section */
 .contact {
-    padding: 5rem 0;
+    padding: clamp(3.5rem, 3rem + 2vw, 5rem) 0;
     background: var(--primary-green);
     color: var(--text-light);
     position: relative;
@@ -1307,7 +1324,7 @@ body {
     backdrop-filter: blur(20px);
     border-top: 1px solid rgba(0, 127, 0, 0.1);
     color: var(--text-dark);
-    padding: 2rem 0;
+    padding: clamp(1.5rem, 1.2rem + 1vw, 2.5rem) 0;
     text-align: center;
     position: relative;
     overflow: hidden;
@@ -1520,9 +1537,7 @@ body {
         grid-template-columns: 1fr;
     }
     
-    .product-carousel {
-        height: 300px;
-    }
+    .product-carousel { height: clamp(220px, 60vw, 300px); }
     
     .carousel-controls {
         bottom: 10px;
@@ -1587,10 +1602,56 @@ body {
     }
 }
     
-    .product-carousel {
-        height: 250px;
-    }
+        .product-carousel { height: clamp(200px, 62vw, 260px); }
+        .hero-carousel-container { min-height: 300px; }
+        .slide-info { transform: translateX(-50%) translateY(5px); }
     
+
+/* Breakpoint médio tablets */
+@media (max-width: 992px) {
+        .hero-content { gap: 2.5rem; }
+        .about-content { gap: 2.5rem; }
+        .about-photo-wrapper { max-width: 520px; }
+}
+
+/* Breakpoint adicional 640px */
+@media (max-width: 640px) {
+        .hero-title { font-size: clamp(2.1rem, 1.4rem + 4vw, 2.6rem); }
+        .hero-buttons { flex-direction: column; }
+        .product-card { padding: 2rem 1.5rem; }
+        .product-card img { width: clamp(170px, 70%, 240px); }
+        .about { padding: 3.2rem 0; }
+        .about-photo-wrapper { max-width: 430px; }
+}
+
+/* Breakpoint micro 360px */
+@media (max-width: 360px) {
+        .hero-title { font-size: clamp(1.9rem, 1.5rem + 3vw, 2.3rem); }
+        .hero-subtitle { font-size: 1rem; }
+        .product-card { padding: 1.6rem 1.2rem; }
+        .product-card img { width: clamp(150px, 75%, 210px); }
+        .slide-info { padding: 0.6rem 1rem; font-size: 0.75rem; }
+}
+
+/* Safe area iOS (notch) */
+@supports(padding: max(0px)) {
+    body { padding-bottom: max(0px, env(safe-area-inset-bottom)); }
+    .footer { padding-bottom: calc(max(0px, env(safe-area-inset-bottom)) + 1rem); }
+}
+
+/* Redução de efeitos em mobile ultra pequeno */
+@media (max-width: 480px) {
+    .product-card { box-shadow: 0 10px 22px rgba(0,0,0,0.18); }
+    .feature-card { box-shadow: 0 8px 18px rgba(0,0,0,0.12); }
+}
+
+/* Landscape phones (altura baixa) */
+@media (max-height: 600px) and (orientation: landscape) {
+    .hero { min-height: 100vh; padding-top: 6rem; }
+    .hero-carousel-container { aspect-ratio: 4/3; }
+    .hero-title { font-size: clamp(1.8rem, 1.4rem + 2vw, 2.2rem); }
+    .hero-subtitle { font-size: clamp(1rem, 0.9rem + 1vw, 1.2rem); }
+}
     .carousel-controls {
         gap: 0.5rem;
         padding: 4px 8px;

@@ -345,6 +345,44 @@
         </div>
     </section>
 
+    <!-- Product Detail Modal -->
+    <div id="productModal" class="product-modal" aria-hidden="true">
+        <div class="product-modal-backdrop" data-pm-close></div>
+        <div class="product-modal-dialog" role="dialog" aria-modal="true" aria-labelledby="pmTitle">
+            <button class="pm-close" aria-label="Fechar detalhes" data-pm-close>
+                <i class="fas fa-times"></i>
+            </button>
+            <div class="pm-body">
+                <div class="pm-media" aria-live="polite">
+                    <button class="pm-nav pm-prev" aria-label="Imagem anterior">
+                        <i class="fas fa-chevron-left"></i>
+                    </button>
+                    <img class="pm-image" alt="" decoding="async" />
+                    <button class="pm-nav pm-next" aria-label="Próxima imagem">
+                        <i class="fas fa-chevron-right"></i>
+                    </button>
+                    <div class="pm-dots" role="tablist" aria-label="Selecionar imagem"></div>
+                </div>
+                <div class="pm-info">
+                    <h3 id="pmTitle" class="pm-title"></h3>
+                    <div class="pm-price"></div>
+                    <p class="pm-desc"></p>
+                    <div class="pm-features"></div>
+                    <div class="pm-cta">
+                        <a class="pm-btn pm-instagram" href="https://www.instagram.com/_raizbrasil" target="_blank" rel="noopener noreferrer">
+                            <i class="fab fa-instagram"></i>
+                            Ver no Instagram
+                        </a>
+                        <a class="pm-btn pm-whatsapp" href="#" target="_blank" rel="noopener noreferrer">
+                            <i class="fab fa-whatsapp"></i>
+                            Pedir no WhatsApp
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Contact Section -->
     <section id="contato" class="contact">
         <div class="container">

@@ -9,6 +9,7 @@ document.addEventListener('DOMContentLoaded', function() {
         hamburger.addEventListener('click', function() {
             hamburger.classList.toggle('active');
             navMenu.classList.toggle('active');
+            document.body.classList.toggle('no-scroll', navMenu.classList.contains('active'));
         });
         
         // Fecha o menu ao clicar em um link
@@ -16,6 +17,7 @@ document.addEventListener('DOMContentLoaded', function() {
             link.addEventListener('click', () => {
                 hamburger.classList.remove('active');
                 navMenu.classList.remove('active');
+                document.body.classList.remove('no-scroll');
             });
         });
     }
@@ -308,7 +310,7 @@ document.addEventListener('DOMContentLoaded', function() {
     document.head.appendChild(rippleStyle);
     
     // Aplica ripple effect a todos os botões
-    const buttons = document.querySelectorAll('.btn, .btn-view');
+    const buttons = document.querySelectorAll('.btn, .btn-view, .pm-btn');
     buttons.forEach(button => {
         button.addEventListener('click', createRipple);
     });
@@ -624,6 +626,185 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Initialize hero carousel
     initializeHeroCarousel();
+
+    // =============================
+    // Product Modal (Lightbox)
+    // =============================
+    initializeProductModal();
+    
+    function initializeProductModal() {
+        const modal = document.getElementById('productModal');
+        if (!modal) return;
+        const dlg = modal.querySelector('.product-modal-dialog');
+        const backdrop = modal.querySelector('[data-pm-close]');
+        const btnClose = modal.querySelector('.pm-close');
+        const imgEl = modal.querySelector('.pm-image');
+        const titleEl = modal.querySelector('.pm-title');
+        const priceEl = modal.querySelector('.pm-price');
+        const descEl = modal.querySelector('.pm-desc');
+        const featEl = modal.querySelector('.pm-features');
+        const dotsEl = modal.querySelector('.pm-dots');
+        const prevBtn = modal.querySelector('.pm-prev');
+        const nextBtn = modal.querySelector('.pm-next');
+        const waBtn = modal.querySelector('.pm-whatsapp');
+
+        // Build dataset from Produtos cards
+        const productItems = document.querySelectorAll('#produtos .product-item');
+        const products = Array.from(productItems).map((item, idx) => {
+            const name = item.querySelector('.product-info h3')?.textContent.trim() || `Produto ${idx+1}`;
+            const price = item.querySelector('.product-price')?.textContent.trim() || '';
+            const desc = item.querySelector('.product-info p')?.textContent.trim() || '';
+            const featureNodes = item.querySelectorAll('.product-features span');
+            const features = Array.from(featureNodes).map(n => ({
+                html: n.innerHTML.trim(),
+                text: n.textContent.trim()
+            }));
+            const slides = item.querySelectorAll('.product-carousel .carousel-slide img');
+            const images = Array.from(slides).map(img => ({
+                src: img.getAttribute('src'),
+                alt: img.getAttribute('alt') || name
+            }));
+            return { name, price, desc, features, images };
+        });
+
+        let currentGallery = [];
+        let currentIndex = 0;
+        let lastFocused = null;
+
+        // Open modal when clicking on any product image area
+        productItems.forEach((item, idx) => {
+            const clickable = item.querySelector('.product-carousel');
+            if (!clickable) return;
+            clickable.style.cursor = 'zoom-in';
+            clickable.setAttribute('tabindex', '0');
+            clickable.setAttribute('role', 'button');
+            clickable.setAttribute('aria-label', `Ampliar ${products[idx].name}`);
+            const open = () => openModal(products[idx]);
+            clickable.addEventListener('click', (e) => {
+                // Evita abrir ao clicar nos controles do mini-carrossel
+                if (e.target.closest('.carousel-controls') || e.target.closest('.carousel-btn') || e.target.closest('.indicator')) {
+                    return;
+                }
+                open();
+            });
+            clickable.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    open();
+                }
+            });
+        });
+
+        function openModal(product) {
+            lastFocused = document.activeElement;
+            currentGallery = product.images;
+            currentIndex = 0;
+            titleEl.textContent = product.name;
+            priceEl.textContent = product.price;
+            descEl.textContent = product.desc;
+            // Features
+            featEl.innerHTML = '';
+            product.features.forEach(f => {
+                const span = document.createElement('span');
+                span.className = 'tag';
+                // mantem ícones se existirem
+                span.innerHTML = f.html || f.text;
+                featEl.appendChild(span);
+            });
+            // WhatsApp CTA with product name
+            const msg = `Olá Raiz Brasil! Quero saber sobre a ${encodeURIComponent(product.name)}.`;
+            waBtn.href = `https://wa.me/554497182044?text=${msg}`;
+            // Build dots
+            buildDots();
+            updateImage();
+            // Open
+            modal.classList.add('open');
+            modal.setAttribute('aria-hidden', 'false');
+            // Focus management
+            setTimeout(() => btnClose.focus(), 10);
+            document.addEventListener('keydown', onKeyDown);
+            trapFocus(true);
+            document.body.classList.add('no-scroll');
+        }
+
+        function closeModal() {
+            modal.classList.remove('open');
+            modal.setAttribute('aria-hidden', 'true');
+            document.removeEventListener('keydown', onKeyDown);
+            trapFocus(false);
+            document.body.classList.remove('no-scroll');
+            if (lastFocused && typeof lastFocused.focus === 'function') lastFocused.focus();
+        }
+
+        function updateImage() {
+            const it = currentGallery[currentIndex];
+            if (!it) return;
+            // atributos de qualidade
+            imgEl.loading = 'eager';
+            imgEl.decoding = 'async';
+            if (currentIndex === 0) imgEl.setAttribute('fetchpriority', 'high');
+            else imgEl.removeAttribute('fetchpriority');
+            imgEl.src = it.src;
+            imgEl.alt = it.alt;
+            // Update dots
+            Array.from(dotsEl.children).forEach((btn, i) => {
+                btn.setAttribute('aria-selected', i === currentIndex ? 'true' : 'false');
+            });
+        }
+
+        function buildDots() {
+            dotsEl.innerHTML = '';
+            currentGallery.forEach((_, i) => {
+                const b = document.createElement('button');
+                b.type = 'button';
+                b.setAttribute('role', 'tab');
+                b.setAttribute('aria-label', `Imagem ${i+1}`);
+                b.setAttribute('aria-selected', i === 0 ? 'true' : 'false');
+                b.addEventListener('click', () => { currentIndex = i; updateImage(); });
+                dotsEl.appendChild(b);
+            });
+        }
+
+        function next() { currentIndex = (currentIndex + 1) % currentGallery.length; updateImage(); }
+        function prev() { currentIndex = (currentIndex - 1 + currentGallery.length) % currentGallery.length; updateImage(); }
+
+        nextBtn.addEventListener('click', next);
+        prevBtn.addEventListener('click', prev);
+        btnClose.addEventListener('click', closeModal);
+        backdrop.addEventListener('click', closeModal);
+
+        function onKeyDown(e) {
+            if (e.key === 'Escape') closeModal();
+            else if (e.key === 'ArrowRight') next();
+            else if (e.key === 'ArrowLeft') prev();
+            else if (e.key === 'Tab') handleTabTrap(e);
+        }
+
+        // Focus trap
+        function trapFocus(enable) {
+            if (!enable) return;
+            // Ensure tabbables have tabindex
+            dlg.querySelectorAll('a, button, input, textarea, [tabindex]')
+                .forEach(el => { if (el.getAttribute('tabindex') === null) el.setAttribute('tabindex','0'); });
+        }
+        function handleTabTrap(e) {
+            const focusable = dlg.querySelectorAll('a[href], button:not([disabled]), textarea, input, [tabindex]:not([tabindex="-1"])');
+            if (!focusable.length) return;
+            const first = focusable[0];
+            const last = focusable[focusable.length - 1];
+            if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+            else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+        }
+
+        // Swipe support on image for mobile
+        let sx = 0; let ex = 0;
+        imgEl.addEventListener('touchstart', (e) => { sx = e.touches[0].clientX; });
+        imgEl.addEventListener('touchend', (e) => { ex = e.changedTouches[0].clientX; handleSwipe(); });
+        function handleSwipe() {
+            const diff = sx - ex; const th = 40;
+            if (Math.abs(diff) > th) { if (diff > 0) next(); else prev(); }
+        }
+    }
     
     // Console message para desenvolvedores
     console.log(`

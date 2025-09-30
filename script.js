@@ -9,7 +9,6 @@ document.addEventListener('DOMContentLoaded', function() {
         hamburger.addEventListener('click', function() {
             hamburger.classList.toggle('active');
             navMenu.classList.toggle('active');
-            document.body.classList.toggle('no-scroll', navMenu.classList.contains('active'));
         });
         
         // Fecha o menu ao clicar em um link
@@ -17,7 +16,6 @@ document.addEventListener('DOMContentLoaded', function() {
             link.addEventListener('click', () => {
                 hamburger.classList.remove('active');
                 navMenu.classList.remove('active');
-                document.body.classList.remove('no-scroll');
             });
         });
     }
@@ -720,19 +718,19 @@ document.addEventListener('DOMContentLoaded', function() {
             // Open
             modal.classList.add('open');
             modal.setAttribute('aria-hidden', 'false');
+            document.body.classList.add('modal-open');
             // Focus management
             setTimeout(() => btnClose.focus(), 10);
             document.addEventListener('keydown', onKeyDown);
             trapFocus(true);
-            document.body.classList.add('no-scroll');
         }
 
         function closeModal() {
             modal.classList.remove('open');
             modal.setAttribute('aria-hidden', 'true');
+            document.body.classList.remove('modal-open');
             document.removeEventListener('keydown', onKeyDown);
             trapFocus(false);
-            document.body.classList.remove('no-scroll');
             if (lastFocused && typeof lastFocused.focus === 'function') lastFocused.focus();
         }
 

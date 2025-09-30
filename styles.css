@@ -16,9 +16,6 @@ body {
     overflow-x: hidden;
 }
 
-/* Evita scroll do fundo quando modal/menu estão abertos */
-.no-scroll { overflow: hidden; }
-
 .container {
     max-width: 1200px;
     margin: 0 auto;
@@ -1489,24 +1486,27 @@ body {
 @media (max-width: 768px) {
     .nav-menu {
         display: none;
-    }
-    /* Menu mobile visível quando ativo */
-    .nav-menu.active {
         position: fixed;
-        top: 64px; /* altura aproximada do header */
+        top: 64px; /* aproximadamente altura do header */
         left: 0;
         right: 0;
-        display: flex;
-        flex-direction: column;
-        gap: 1rem;
         background: rgba(255,255,255,0.98);
         backdrop-filter: blur(12px);
-        padding: 16px 20px 24px;
-        border-top: 1px solid rgba(0,127,0,0.1);
-        box-shadow: 0 12px 24px rgba(0,0,0,0.08);
-        z-index: 1100;
+        border-bottom: 1px solid rgba(0,127,0,0.12);
+        box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+        flex-direction: column;
+        gap: 0;
+        padding: 8px 12px 12px;
+        z-index: 1200;
     }
-    .nav-menu.active a { padding: 8px 2px; }
+    .nav-menu.active { display: flex; }
+    .nav-menu li { list-style: none; }
+    .nav-menu a {
+        padding: 14px 10px;
+        display: block;
+        border-radius: 10px;
+    }
+    .nav-menu a:hover { background: rgba(0,127,0,0.06); }
     
     .hamburger {
         display: flex;
@@ -1596,6 +1596,19 @@ body {
     }
 }
 
+/* Grande desktops */
+@media (min-width: 1200px) {
+    .about-content {
+        grid-template-columns: 1.1fr 0.9fr; /* mais espaço para a imagem */
+        align-items: start;
+    }
+    .about-photo-wrapper {
+        max-width: 700px; /* reduzido novamente (antes 760px) */
+    }
+    .about-text h2 {
+        font-size: 2.9rem;
+    }
+
 @media (min-width: 1200px) {
     .about-content {
         grid-template-columns: 1.1fr 0.9fr; /* mais espaço para a imagem */
@@ -1608,13 +1621,30 @@ body {
         font-size: 2.9rem;
     }
 }
-
-@media (max-width: 480px) {
-    .product-carousel { height: 250px; }
-    .carousel-controls { gap: 0.5rem; padding: 4px 8px; }
-    .carousel-btn { width: 24px; height: 24px; font-size: 0.65rem; }
-    .indicator { width: 6px; height: 6px; }
+    
+    .product-carousel {
+        height: 250px;
+    }
+    
+    .carousel-controls {
+        gap: 0.5rem;
+        padding: 4px 8px;
+    }
+    
+    .carousel-btn {
+        width: 20px;
+        height: 20px;
+        font-size: 0.6rem;
+    }
+    
+    .indicator {
+        width: 6px;
+        height: 6px;
+    }
 }
+
+/* Trava scroll quando modal aberto */
+body.modal-open { overflow: hidden; }
 
 /* Scroll suave para navegação */
 @media (prefers-reduced-motion: no-preference) {
@@ -1734,7 +1764,7 @@ textarea:focus {
 
 .pm-dots {
     position: absolute;
-    bottom: calc(10px + env(safe-area-inset-bottom, 0));
+    bottom: 10px;
     left: 50%;
     transform: translateX(-50%);
     display: flex;

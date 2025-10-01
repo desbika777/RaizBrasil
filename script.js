@@ -718,7 +718,6 @@ document.addEventListener('DOMContentLoaded', function() {
             // Open
             modal.classList.add('open');
             modal.setAttribute('aria-hidden', 'false');
-            document.body.classList.add('modal-open');
             // Focus management
             setTimeout(() => btnClose.focus(), 10);
             document.addEventListener('keydown', onKeyDown);
@@ -728,7 +727,6 @@ document.addEventListener('DOMContentLoaded', function() {
         function closeModal() {
             modal.classList.remove('open');
             modal.setAttribute('aria-hidden', 'true');
-            document.body.classList.remove('modal-open');
             document.removeEventListener('keydown', onKeyDown);
             trapFocus(false);
             if (lastFocused && typeof lastFocused.focus === 'function') lastFocused.focus();

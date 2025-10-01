@@ -1482,169 +1482,101 @@ body {
     }
 }
 
-/* Responsividade */
-@media (max-width: 768px) {
-    .nav-menu {
-        display: none;
-        position: fixed;
-        top: 64px; /* aproximadamente altura do header */
-        left: 0;
+/* Responsividade (recriada) */
+/* Mantemos os estilos desktop como padrão e apenas ajustamos telas menores */
+
+/* Tablets grandes e laptops menores */
+@media (max-width: 1024px) {
+    .hero-content { gap: 3rem; }
+    .hero-carousel-container { max-width: 460px; height: 380px; }
+    .product-card img { width: 260px; }
+}
+
+/* Tablets e telas até ~900px */
+@media (max-width: 900px) {
+    /* Navegação mobile */
+    .hamburger { display: flex; }
+    .nav-menu { display: none; }
+    .nav-menu.active {
+        display: flex;
+        position: absolute;
+        top: 100%;
         right: 0;
+        left: 0;
         background: rgba(255,255,255,0.98);
         backdrop-filter: blur(12px);
-        border-bottom: 1px solid rgba(0,127,0,0.12);
-        box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+        border-bottom: 1px solid rgba(0, 127, 0, 0.1);
         flex-direction: column;
-        gap: 0;
-        padding: 8px 12px 12px;
-        z-index: 1200;
+        gap: 1rem;
+        padding: 1rem 1.2rem 1.2rem;
+        box-shadow: 0 12px 24px rgba(0,0,0,0.08);
+        z-index: 1001;
     }
-    .nav-menu.active { display: flex; }
-    .nav-menu li { list-style: none; }
-    .nav-menu a {
-        padding: 14px 10px;
-        display: block;
-        border-radius: 10px;
-    }
-    .nav-menu a:hover { background: rgba(0,127,0,0.06); }
-    
-    .hamburger {
-        display: flex;
-    }
-    
-    .hero-content {
-        grid-template-columns: 1fr;
-        text-align: center;
-        gap: 2rem;
-    }
-    
-    .hero-title {
-        font-size: 2.5rem;
-        justify-content: center;
-    }
-    
-    .about-content {
-        grid-template-columns: 1fr;
-        gap: 2rem;
-    }
-    
-    .contact-content {
-        grid-template-columns: 1fr;
-        gap: 2rem;
-    }
-    
-    .features-grid {
-        grid-template-columns: 1fr;
-    }
-    
-    .products-grid {
-        grid-template-columns: 1fr;
-    }
-    
-    .product-carousel {
-        height: 300px;
-    }
-    
-    .carousel-controls {
-        bottom: 10px;
-        padding: 6px 12px;
-    }
-    
-    .carousel-btn {
-        width: 25px;
-        height: 25px;
-        font-size: 0.7rem;
-    }
-    
-    .slide-label {
-        top: 10px;
-        right: 10px;
-        padding: 4px 8px;
-        font-size: 0.7rem;
-    }
-    
-    .hero-buttons {
-        justify-content: center;
-    }
-    
-    .btn {
-        width: 100%;
-        max-width: 250px;
-    }
+    .nav-menu a { padding: 0.4rem 0; }
+
+    /* Hero em coluna única */
+    .hero { min-height: 100svh; padding-top: 84px; }
+    .hero-content { grid-template-columns: 1fr; text-align: center; gap: 2rem; }
+    .hero-title { justify-content: center; font-size: 2.8rem; }
+    .hero-buttons { justify-content: center; }
+    .hero-image { order: 2; }
+    .hero-text { order: 1; }
+    .hero-carousel-container { max-width: 420px; height: 340px; }
+    .hero-carousel-indicators { bottom: -30px; }
+
+    /* Seções em coluna única quando aplicável */
+    .about-content { grid-template-columns: 1fr; gap: 2rem; }
+    .contact-content { grid-template-columns: 1fr; gap: 2rem; }
+    .features-grid { grid-template-columns: repeat(2, 1fr); }
+    .products-grid { grid-template-columns: repeat(2, 1fr); }
+
+    /* Modal de produto em coluna única */
+    .product-modal-dialog { grid-template-columns: 1fr; width: min(100% - 16px, 760px); }
+    .pm-image { max-height: 56vh; }
 }
 
+/* Phones grandes e tablets pequenos */
+@media (max-width: 768px) {
+    .features-grid { grid-template-columns: 1fr; }
+    .products-grid { grid-template-columns: 1fr; }
+    .product-carousel { height: 300px; }
+    .carousel-controls { bottom: 10px; padding: 6px 12px; }
+    .carousel-btn { width: 28px; height: 28px; font-size: 0.8rem; }
+    .slide-label { top: 10px; right: 10px; padding: 4px 8px; font-size: 0.75rem; }
+    .contact-title { font-size: 1.9rem; }
+    .btn { width: 100%; max-width: 280px; }
+}
+
+/* Phones médios (Pixel, iPhone Plus) */
+@media (max-width: 600px) {
+    .container { padding: 0 16px; }
+    .hero-title { font-size: 2.2rem; }
+    .hero-subtitle { font-size: 1.15rem; }
+    .hero-description { font-size: 1.02rem; }
+    .hero-carousel-container { max-width: 360px; height: 300px; }
+    .product-card { padding: 1.6rem; }
+    .product-card img { width: 220px; }
+    .slide-info { padding: 0.6rem 1rem; font-size: 0.95rem; bottom: -8px; }
+    .hero-carousel-btn { width: 48px; height: 48px; font-size: 1.2rem; }
+    .contact-core { gap: 1.4rem; }
+}
+
+/* Phones pequenos (iPhone SE, 360-414px) */
 @media (max-width: 480px) {
-    .hero-title {
-        font-size: 2rem;
-    }
-    
-    .hero-subtitle {
-        font-size: 1.2rem;
-    }
-    
-    .container {
-        padding: 0 15px;
-    }
-    
-    .feature-card,
-    .contact-form {
-        padding: 1.5rem;
-    }
-    
-    .about-photo-wrapper {
-        max-width: 100%;
-    }
+    .container { padding: 0 12px; }
+    .hero { padding-top: 78px; }
+    .hero-text { margin-top: 6px; }
+    .hero-title { font-size: 1.9rem; line-height: 1.2; margin-bottom: 0.6rem; }
+    .hero-subtitle { font-size: 1rem; margin-bottom: 0.6rem; }
+    .hero-description { font-size: 0.96rem; margin-bottom: 1.1rem; }
+    .hero-carousel-container { max-width: 320px; height: 270px; }
+    .hero-carousel-indicators { bottom: -16px; }
+    .feature-card, .contact-form { padding: 1.3rem; }
+    .product-info { padding: 1.4rem; }
+    .product-price { font-size: 1.35rem; }
+    .pm-title { font-size: 1.35rem; }
+    .pm-price { font-size: 1.1rem; }
 }
-
-/* Grande desktops */
-@media (min-width: 1200px) {
-    .about-content {
-        grid-template-columns: 1.1fr 0.9fr; /* mais espaço para a imagem */
-        align-items: start;
-    }
-    .about-photo-wrapper {
-        max-width: 700px; /* reduzido novamente (antes 760px) */
-    }
-    .about-text h2 {
-        font-size: 2.9rem;
-    }
-
-@media (min-width: 1200px) {
-    .about-content {
-        grid-template-columns: 1.1fr 0.9fr; /* mais espaço para a imagem */
-        align-items: start;
-    }
-    .about-photo-wrapper {
-        max-width: 700px; /* reduzido novamente (antes 760px) */
-    }
-    .about-text h2 {
-        font-size: 2.9rem;
-    }
-}
-    
-    .product-carousel {
-        height: 250px;
-    }
-    
-    .carousel-controls {
-        gap: 0.5rem;
-        padding: 4px 8px;
-    }
-    
-    .carousel-btn {
-        width: 20px;
-        height: 20px;
-        font-size: 0.6rem;
-    }
-    
-    .indicator {
-        width: 6px;
-        height: 6px;
-    }
-}
-
-/* Trava scroll quando modal aberto */
-body.modal-open { overflow: hidden; }
 
 /* Scroll suave para navegação */
 @media (prefers-reduced-motion: no-preference) {
@@ -1846,10 +1778,7 @@ textarea:focus {
 .pm-instagram { background: linear-gradient(45deg,#f9ce34,#ee2a7b,#6228d7); }
 .pm-whatsapp { background: linear-gradient(45deg,#25D366,#128C7E); }
 
-@media (max-width: 900px) {
-    .product-modal-dialog { grid-template-columns: 1fr; width: min(100% - 16px, 760px); }
-    .pm-image { max-height: 56vh; }
-}
+/* (Movido para a nova seção de responsividade) */
 
 /* Animations */
 @keyframes pmFadeIn { from { opacity: 0 } to { opacity: 1 } }

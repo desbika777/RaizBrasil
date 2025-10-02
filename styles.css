@@ -1632,12 +1632,19 @@ textarea:focus {
     background: #fff;
     border-radius: 18px;
     box-shadow: 0 20px 60px rgba(0,0,0,0.35);
-    overflow: hidden;
+    overflow: auto; /* permite rolar o conteúdo dentro do modal */
+    -webkit-overflow-scrolling: touch; /* rolagem suave no iOS */
     display: grid;
     grid-template-columns: 1.35fr 0.65fr;
     gap: 0;
     animation: pmSlideIn 220ms cubic-bezier(.2,.8,.2,1);
 }
+
+/* Travar rolagem do plano de fundo quando o modal estiver aberto */
+html.modal-open, body.modal-open { overflow: hidden; }
+body.modal-open { touch-action: none; overscroll-behavior: contain; }
+/* Evita propagação de rolagem para a página por trás */
+.product-modal { overscroll-behavior: contain; }
 
 .pm-close {
     position: absolute;
@@ -1736,6 +1743,9 @@ textarea:focus {
         width: min(100% - 16px, 760px);
     }
     .pm-image { max-height: 56vh; }
+    /* Em mobile, permita rolar as informações separadamente, mantendo a imagem visível */
+    .pm-media { overflow: hidden; }
+    .pm-info { max-height: 40vh; overflow: auto; -webkit-overflow-scrolling: touch; }
 }
 
 /* Melhora tocabilidade das setas em telas muito pequenas */

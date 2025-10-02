@@ -718,6 +718,9 @@ document.addEventListener('DOMContentLoaded', function() {
             // Open
             modal.classList.add('open');
             modal.setAttribute('aria-hidden', 'false');
+            // Scroll lock: evita rolagem da página por trás
+            document.documentElement.classList.add('modal-open');
+            document.body.classList.add('modal-open');
             // Focus management
             setTimeout(() => btnClose.focus(), 10);
             document.addEventListener('keydown', onKeyDown);
@@ -729,6 +732,9 @@ document.addEventListener('DOMContentLoaded', function() {
             modal.setAttribute('aria-hidden', 'true');
             document.removeEventListener('keydown', onKeyDown);
             trapFocus(false);
+            // Libera o scroll da página
+            document.documentElement.classList.remove('modal-open');
+            document.body.classList.remove('modal-open');
             if (lastFocused && typeof lastFocused.focus === 'function') lastFocused.focus();
         }
 

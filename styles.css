@@ -1532,7 +1532,7 @@ body {
 
     /* Modal de produto em coluna única */
     .product-modal-dialog { grid-template-columns: 1fr; width: min(100% - 16px, 760px); }
-    .pm-image { max-height: 60vh; }
+    .pm-image { max-height: 56vh; }
 }
 
 /* Phones grandes e tablets pequenos */
@@ -1559,17 +1559,6 @@ body {
     .slide-info { padding: 0.6rem 1rem; font-size: 0.95rem; bottom: -8px; }
     .hero-carousel-btn { width: 48px; height: 48px; font-size: 1.2rem; }
     .contact-core { gap: 1.4rem; }
-    /* Modal: fixa o X e garante setas visíveis */
-    .pm-close {
-        position: fixed;
-        top: 12px;
-        right: 12px;
-        width: 46px;
-        height: 46px;
-        background: rgba(255,255,255,0.95);
-    }
-    .pm-nav { width: 46px; height: 46px; }
-    .pm-image { max-height: 62vh; }
 }
 
 /* Phones pequenos (iPhone SE, 360-414px) */
@@ -1587,10 +1576,6 @@ body {
     .product-price { font-size: 1.35rem; }
     .pm-title { font-size: 1.35rem; }
     .pm-price { font-size: 1.1rem; }
-    /* Modal: mais espaço para a foto e info abaixo */
-    .product-modal-dialog { width: min(100% - 12px, 560px); }
-    .pm-image { max-height: 64vh; }
-    .pm-info { padding: 18px; gap: 10px; }
 }
 
 /* Scroll suave para navegação */
@@ -1669,6 +1654,7 @@ textarea:focus {
     color: #222;
     cursor: pointer;
     box-shadow: 0 6px 18px rgba(0,0,0,0.15);
+    z-index: 30; /* garante que fique acima da imagem e setas */
 }
 
 .pm-body { display: contents; }
@@ -1679,6 +1665,7 @@ textarea:focus {
     display: grid;
     place-items: center;
     padding: 10px;
+    overflow: hidden; /* evita que conteúdo ultrapasse em telas pequenas */
 }
 
 .pm-image {
@@ -1690,8 +1677,6 @@ textarea:focus {
     box-shadow: 0 10px 30px rgba(0,0,0,0.15);
     image-rendering: auto;
     transition: transform .2s ease;
-    position: relative;
-    z-index: 1; /* garante que setas fiquem acima */
 }
 .pm-media:hover .pm-image { transform: scale(1.02); }
 
@@ -1707,7 +1692,8 @@ textarea:focus {
     box-shadow: 0 8px 20px rgba(0,0,0,0.15);
     color: #111;
     cursor: pointer;
-    z-index: 3; /* acima da imagem para nunca sumir */
+    z-index: 20; /* assegura que nunca fiquem atrás da imagem */
+    pointer-events: auto; /* garante clicável sempre */
 }
 .pm-prev { left: 14px; }
 .pm-next { right: 14px; }
@@ -1719,7 +1705,6 @@ textarea:focus {
     transform: translateX(-50%);
     display: flex;
     gap: 8px;
-    z-index: 2; /* acima da imagem, abaixo das setas */
 }
 
 .pm-dots button {
@@ -1734,6 +1719,28 @@ textarea:focus {
 .pm-dots button[aria-selected="true"] {
     width: 20px;
     background: var(--primary-green);
+}
+
+/* Botão de fechar com respeito à safe-area (iOS notch) */
+@supports (padding: max(0px)) {
+    .pm-close {
+        top: max(10px, env(safe-area-inset-top));
+        right: max(10px, env(safe-area-inset-right));
+    }
+}
+
+/* Garante empilhamento do modal no mobile mesmo com regras posteriores */
+@media (max-width: 900px) {
+    .product-modal-dialog {
+        grid-template-columns: 1fr !important; /* força imagem em cima e info em baixo */
+        width: min(100% - 16px, 760px);
+    }
+    .pm-image { max-height: 56vh; }
+}
+
+/* Melhora tocabilidade das setas em telas muito pequenas */
+@media (max-width: 480px) {
+    .pm-nav { width: 48px; height: 48px; }
 }
 
 .pm-info {
@@ -1751,7 +1758,6 @@ textarea:focus {
     background: radial-gradient(1200px 400px at 120% -10%, rgba(0,127,0,0.08), transparent 50%),
                 radial-gradient(800px 300px at -20% 110%, rgba(255,215,0,0.08), transparent 55%);
     pointer-events: none;
-    z-index: 4; /* sempre acima de tudo */
 }
 .pm-info::after {
     content: '';

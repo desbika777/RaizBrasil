@@ -1532,7 +1532,7 @@ body {
 
     /* Modal de produto em coluna única */
     .product-modal-dialog { grid-template-columns: 1fr; width: min(100% - 16px, 760px); }
-    .pm-image { max-height: 56vh; }
+    .pm-image { max-height: 60vh; }
 }
 
 /* Phones grandes e tablets pequenos */
@@ -1559,6 +1559,17 @@ body {
     .slide-info { padding: 0.6rem 1rem; font-size: 0.95rem; bottom: -8px; }
     .hero-carousel-btn { width: 48px; height: 48px; font-size: 1.2rem; }
     .contact-core { gap: 1.4rem; }
+    /* Modal: fixa o X e garante setas visíveis */
+    .pm-close {
+        position: fixed;
+        top: 12px;
+        right: 12px;
+        width: 46px;
+        height: 46px;
+        background: rgba(255,255,255,0.95);
+    }
+    .pm-nav { width: 46px; height: 46px; }
+    .pm-image { max-height: 62vh; }
 }
 
 /* Phones pequenos (iPhone SE, 360-414px) */
@@ -1576,6 +1587,10 @@ body {
     .product-price { font-size: 1.35rem; }
     .pm-title { font-size: 1.35rem; }
     .pm-price { font-size: 1.1rem; }
+    /* Modal: mais espaço para a foto e info abaixo */
+    .product-modal-dialog { width: min(100% - 12px, 560px); }
+    .pm-image { max-height: 64vh; }
+    .pm-info { padding: 18px; gap: 10px; }
 }
 
 /* Scroll suave para navegação */
@@ -1675,6 +1690,8 @@ textarea:focus {
     box-shadow: 0 10px 30px rgba(0,0,0,0.15);
     image-rendering: auto;
     transition: transform .2s ease;
+    position: relative;
+    z-index: 1; /* garante que setas fiquem acima */
 }
 .pm-media:hover .pm-image { transform: scale(1.02); }
 
@@ -1690,6 +1707,7 @@ textarea:focus {
     box-shadow: 0 8px 20px rgba(0,0,0,0.15);
     color: #111;
     cursor: pointer;
+    z-index: 3; /* acima da imagem para nunca sumir */
 }
 .pm-prev { left: 14px; }
 .pm-next { right: 14px; }
@@ -1701,6 +1719,7 @@ textarea:focus {
     transform: translateX(-50%);
     display: flex;
     gap: 8px;
+    z-index: 2; /* acima da imagem, abaixo das setas */
 }
 
 .pm-dots button {
@@ -1732,6 +1751,7 @@ textarea:focus {
     background: radial-gradient(1200px 400px at 120% -10%, rgba(0,127,0,0.08), transparent 50%),
                 radial-gradient(800px 300px at -20% 110%, rgba(255,215,0,0.08), transparent 55%);
     pointer-events: none;
+    z-index: 4; /* sempre acima de tudo */
 }
 .pm-info::after {
     content: '';

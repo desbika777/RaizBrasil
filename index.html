@@ -19,21 +19,21 @@
     <header class="header">
         <nav class="navbar">
             <div class="nav-container">
-                <div class="nav-logo">
+                <a href="#home" class="nav-logo" aria-label="Voltar ao topo">
                     <img src="images/LOgoRaizBrasilSemFundo.png" alt="Raiz Brasil Logo" class="logo-img">
                     <span class="brand-name">RAIZ BRASIL</span>
-                </div>
-                <ul class="nav-menu">
+                </a>
+                <ul class="nav-menu" id="primary-menu">
                     <li><a href="#home">Início</a></li>
-                    <li><a href="#produtos">Produtos</a></li>
                     <li><a href="#sobre">Sobre</a></li>
+                    <li><a href="#produtos" class="featured-link">Produtos</a></li>
                     <li><a href="#contato">Contato</a></li>
                 </ul>
-                <div class="hamburger">
+                <button class="hamburger" type="button" aria-label="Abrir menu" aria-controls="primary-menu" aria-expanded="false">
                     <span></span>
                     <span></span>
                     <span></span>
-                </div>
+                </button>
             </div>
         </nav>
     </header>
@@ -203,6 +203,11 @@
                                 <div class="slide-label">Costas</div>
                             </div>
                         </div>
+                        <!-- Hint de clique para abrir detalhes -->
+                        <div class="click-hint" aria-hidden="true">
+                            <i class="fas fa-magnifying-glass"></i>
+                            Ver detalhes
+                        </div>
                         <div class="carousel-controls">
                             <button class="carousel-btn prev" data-carousel="0">
                                 <i class="fas fa-chevron-left"></i>
@@ -217,7 +222,7 @@
                         </div>
                     </div>
                     <div class="product-info">
-                        <h3>Camiseta Raiz Preta</h3>
+                        <h3>Raiz Tradicional Preta</h3>
                         <p>Design tradicional exclusivo com proteção UV avançada</p>
                         <div class="product-price">R$ 139,90</div>
                         <div class="product-features">
@@ -241,6 +246,11 @@
                                 <div class="slide-label">Costas</div>
                             </div>
                         </div>
+                        <!-- Hint de clique para abrir detalhes -->
+                        <div class="click-hint" aria-hidden="true">
+                            <i class="fas fa-magnifying-glass"></i>
+                            Ver detalhes
+                        </div>
                         <div class="carousel-controls">
                             <button class="carousel-btn prev" data-carousel="1">
                                 <i class="fas fa-chevron-left"></i>
@@ -255,7 +265,7 @@
                         </div>
                     </div>
                     <div class="product-info">
-                        <h3>Camiseta Raiz Azul/Cinza</h3>
+                        <h3>Raiz Original Azul/Cinza</h3>
                         <p>Tecnologia premium para o campo brasileiro</p>
                         <div class="product-price">R$ 139,99</div>
                         <div class="product-features">
@@ -279,6 +289,11 @@
                                 <div class="slide-label">Costas</div>
                             </div>
                         </div>
+                        <!-- Hint de clique para abrir detalhes -->
+                        <div class="click-hint" aria-hidden="true">
+                            <i class="fas fa-magnifying-glass"></i>
+                            Ver detalhes
+                        </div>
                         <div class="carousel-controls">
                             <button class="carousel-btn prev" data-carousel="2">
                                 <i class="fas fa-chevron-left"></i>
@@ -293,7 +308,7 @@
                         </div>
                     </div>
                     <div class="product-info">
-                        <h3>Camiseta Raiz Edição Agrícola</h3>
+                        <h3>Raiz Edição Agrícola</h3>
                         <p>Edição especial com design diferenciado</p>
                         <div class="product-price">R$ 139,90</div>
                         <div class="product-features">

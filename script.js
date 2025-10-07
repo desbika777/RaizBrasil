@@ -6,18 +6,57 @@ document.addEventListener('DOMContentLoaded', function() {
     const navMenu = document.querySelector('.nav-menu');
     
     if (hamburger && navMenu) {
-        hamburger.addEventListener('click', function() {
-            hamburger.classList.toggle('active');
-            navMenu.classList.toggle('active');
+        const closeMenu = () => {
+            hamburger.classList.remove('active');
+            navMenu.classList.remove('active');
+            hamburger.setAttribute('aria-expanded', 'false');
+        };
+        const openMenu = () => {
+            hamburger.classList.add('active');
+            navMenu.classList.add('active');
+            hamburger.setAttribute('aria-expanded', 'true');
+        };
+        const toggleMenu = () => {
+            const isOpen = hamburger.classList.contains('active');
+            if (isOpen) closeMenu(); else openMenu();
+        };
+
+        hamburger.addEventListener('click', toggleMenu);
+        hamburger.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                toggleMenu();
+            }
+        });
+
+        // Fecha ao clicar fora
+        document.addEventListener('click', (e) => {
+            if (!navMenu.classList.contains('active')) return;
+            const clickedInside = e.target.closest('.nav-container');
+            if (!clickedInside) {
+                closeMenu();
+            }
+        });
+
+        // Fecha com ESC
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeMenu();
         });
         
         // Fecha o menu ao clicar em um link
         document.querySelectorAll('.nav-menu a').forEach(link => {
             link.addEventListener('click', () => {
-                hamburger.classList.remove('active');
-                navMenu.classList.remove('active');
+                closeMenu();
             });
         });
+
+        // Fecha o menu ao redimensionar para desktop
+        const handleResizeClose = () => {
+            if (window.innerWidth > 900) {
+                closeMenu();
+            }
+        };
+        window.addEventListener('resize', debounce(handleResizeClose, 100));
     }
     
     // Header transparente/sólido baseado no scroll
